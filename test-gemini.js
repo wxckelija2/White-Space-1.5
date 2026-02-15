@@ -1,47 +1,21 @@
-const fetch = require('node-fetch');
+// Test if Gemini AI service is properly initialized
+console.log('🔍 Testing Gemini AI Service Initialization...\n');
 
-// Mock the fetch for Node.js environment
-global.fetch = fetch;
+// Import the Gemini service
+const { geminiChatService } = require('./lib/ai.ts');
 
-// Load environment variables
-require('dotenv').config();
+console.log('Gemini service available:', geminiChatService.isAvailable());
 
-// Simple Gemini test
-async function testGeminiDirect() {
-  try {
-    const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
-    console.log('🧪 Testing Gemini API directly...');
-    console.log('API Key present:', !!apiKey);
+if (geminiChatService.isAvailable()) {
+  console.log('✅ Gemini is ready to use!');
+} else {
+  console.log('❌ Gemini is not available - will use mock mode');
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: 'Write a one-sentence summary about artificial intelligence.'
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 100,
-        },
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status} ${response.statusText}`);
-    }
-
-    const result = await response.json();
-    console.log('✅ Gemini API working!');
-    console.log('Response:', result.candidates?.[0]?.content?.parts?.[0]?.text?.substring(0, 100) + '...');
-
-  } catch (error) {
-    console.error('❌ Gemini test failed:', error.message);
-  }
+  // Check environment variables
+  console.log('API Key exists:', !!process.env.EXPO_PUBLIC_GEMINI_API_KEY);
+  console.log('Provider setting:', process.env.EXPO_PUBLIC_AI_PROVIDER);
 }
 
-testGeminiDirect();
+// Test the AI service provider
+const { aiService } = require('./lib/ai.ts');
+console.log('AI Service provider:', aiService.getProvider());

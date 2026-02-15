@@ -1,266 +1,171 @@
-# White Space
+# White Space Pro 🚀
 
-White Space is an AI-powered workspace where users generate, iterate, compare, and lock drafts to turn blank ideas into finished outputs. It's Photoshop for ideas - a draft-first creative tool that combines AI generation with professional iteration workflows.
+A premium AI assistant platform with subscription management, advanced features, and enterprise capabilities.
 
-## What Makes White Space Unique
+## ✨ Features
 
-### Draft-First Workflow
-Unlike chat-based AI tools, White Space treats every generation as an iterative draft:
-- **Create**: Start with any input (text, voice, image, file)
-- **Iterate**: Generate multiple versions and improvements
-- **Compare**: Side-by-side draft comparison to pick the best
-- **Branch**: Fork drafts into alternative directions
-- **Lock**: Finalize drafts when they're perfect
+### 🤖 AI Capabilities
+- **Multiple AI Models**: GPT-4, Claude-3, Gemini, and more
+- **Code Generation**: Intelligent code completion and debugging
+- **Image Generation**: AI-powered art creation (Pro feature)
+- **Document Analysis**: Advanced file processing
+- **Voice Integration**: Speech-to-text and text-to-speech
 
-### Professional Iteration Tools
-Built for creators who need precision:
-- **Timeline View**: Visual draft history with version control
-- **Undo/Redo**: Revert to any previous state
-- **Branching**: Create alternative versions without losing work
-- **Comparison Mode**: Side-by-side diff view of drafts
-- **Locking**: Mark drafts as final to prevent accidental changes
+### 💰 Subscription System
+- **Free Tier**: 50 messages/day, basic features
+- **Pro Tier**: $19.99/month - 1,000 messages/day, premium features
+- **Enterprise Tier**: $99.99/month - Unlimited usage, dedicated support
+- **Stripe Integration**: Secure payment processing
+- **Usage Tracking**: Real-time monitoring and limits
 
-### AI-Powered Refinement
-Smart iteration features:
-- **Improve**: Generate better versions of existing drafts
-- **Rewrite**: Create alternative approaches
-- **Expand**: Add depth and detail
-- **Summarize**: Condense for clarity
+### 🌍 Internationalization
+- **50+ Languages**: Comprehensive language support
+- **Auto-Detection**: Smart language recognition
+- **Personalized Responses**: AI adapts to user language preferences
 
-## Example Use Cases
-
-**Social Media Creator**
-1. Upload video + "Create Instagram clip with engaging hook"
-2. AI generates first draft with trim points and caption
-3. Compare 3 alternative versions side-by-side
-4. Iterate on the best one with "Make it more energetic"
-5. Branch into TikTok and Instagram variants
-6. Lock final versions and export
-
-**Interior Designer**
-1. Snap room photo + "Modern minimalist redesign"
-2. Generate initial mood board and layout concepts
-3. Improve color palette in separate draft branch
-4. Compare shopping lists from different styles
-5. Lock final design and export presentation deck
-
-**Entrepreneur**
-1. Voice note: "App idea for connecting local artists"
-2. AI creates initial pitch deck and app mockups
-3. Iterate through 5 versions refining the value prop
-4. Branch into different monetization strategies
-5. Compare final options and lock the winner
-
-## Tech Stack
-
-- **Framework**: Expo + React Native
-- **Language**: TypeScript
-- **Database**: Supabase (PostgreSQL)
-- **Navigation**: Expo Router (Tab-based + Stack)
-- **Icons**: Lucide React Native
-- **Styling**: React Native StyleSheet
-- **AI Integration**: Hugging Face, OpenAI, Anthropic (configurable)
-- **Monetization**: RevenueCat
-- **Export**: PDF generation, file sharing
-- **Animations**: React Native Animated API
-
-## Project Structure
-
-```
-white-space/
-├── app/
-│   ├── (tabs)/
-│   │   ├── _layout.tsx           # Tab navigation
-│   │   ├── index.tsx              # Create/Input screen
-│   │   ├── projects.tsx           # Projects history
-│   │   └── settings.tsx           # Settings & integrations
-│   ├── draft-workspace/
-│   │   └── [projectId].tsx        # Draft iteration workspace
-│   ├── draft-compare/
-│   │   └── [projectId].tsx        # Side-by-side comparison
-│   ├── subscription.tsx           # Subscription management
-│   ├── _layout.tsx                # Root layout
-│   └── +not-found.tsx            # 404 screen
-├── components/
-│   ├── ProcessingModal.tsx        # Generation progress
-│   ├── ResultsModal.tsx           # Output results
-│   └── AnimatedLoading.tsx        # Custom loading animation
-├── lib/
-│   ├── supabase.ts                # Supabase client
-│   ├── ai.ts                      # AI service integration
-│   ├── export.ts                  # Export functionality
-│   └── subscription.ts            # RevenueCat integration
-├── hooks/
-│   ├── useFrameworkReady.ts       # Framework initialization
-│   ├── useProjects.ts             # Project management
-│   └── useDrafts.ts               # Draft management
-├── types/
-│   ├── database.ts                # Database types
-│   └── env.d.ts                  # Environment types
-└── AI_SETUP.md                    # AI integration guide
-```
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+
-- Expo CLI
 - Supabase account
+- Stripe account
+- Expo CLI
 
 ### Installation
 
-1. Clone the repository
-```bash
-git clone <repository-url>
-cd white-space
-```
+1. **Clone and setup**:
+   ```bash
+   git clone <your-repo>
+   cd white-space-pro
+   npm install
+   ```
 
-2. Install dependencies
-```bash
-npm install
-```
+2. **Environment setup**:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your API keys
+   ```
 
-3. Set up environment variables
-```bash
-cp .env.example .env
-```
+3. **Supabase setup**:
+   ```bash
+   # Run the migration
+   supabase db push
+   ```
 
-Edit `.env` and configure your services:
+4. **Stripe setup**:
+   - Follow `STRIPE_SETUP.md`
+   - Create products and prices
+   - Set up webhooks
+
+5. **Deploy functions**:
+   ```bash
+   supabase functions deploy
+   ```
+
+6. **Start development**:
+   ```bash
+   npm run dev
+   ```
+
+## 🏗️ Architecture
+
+### Core Components
+- **AI Service**: Multi-provider AI integration with subscription gating
+- **Subscription Manager**: Stripe-powered billing system
+- **Usage Tracking**: Real-time limits and analytics
+- **Admin Panel**: User management and insights
+- **Image Generator**: Pro-tier AI art creation
+
+### Database Schema
+- `subscriptions`: User subscription data
+- `usage_stats`: Daily/monthly usage tracking
+- `generated_images`: AI-generated content storage
+- `user_settings`: Preferences and configurations
+
+### Supabase Edge Functions
+- `create-checkout-session`: Payment processing
+- `stripe-webhook`: Subscription lifecycle management
+- `generate-images`: AI image creation
+
+## 🔧 Configuration
+
+### Environment Variables
 ```env
-# Required
-EXPO_PUBLIC_SUPABASE_URL=your-supabase-url
-EXPO_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+# Supabase
+EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
 
-# AI Provider (choose one or use 'mock' for development)
-EXPO_PUBLIC_AI_PROVIDER=mock
-EXPO_PUBLIC_HUGGINGFACE_API_KEY=your-huggingface-key
-# EXPO_PUBLIC_OPENAI_API_KEY=your-openai-key
-# EXPO_PUBLIC_ANTHROPIC_API_KEY=your-anthropic-key
+# Stripe
+EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 
-# Monetization (optional)
-EXPO_PUBLIC_REVENUECAT_API_KEY=your-revenuecat-key
+# AI Providers
+EXPO_PUBLIC_OPENAI_API_KEY=sk-...
+EXPO_PUBLIC_ANTHROPIC_API_KEY=sk-ant-...
 ```
 
-See `AI_SETUP.md` for detailed AI configuration instructions.
+### Stripe Products
+Create these products in your Stripe Dashboard:
 
-4. Start the development server
+1. **White Space Pro**
+   - Monthly: $19.99
+   - Yearly: $199.99
+
+2. **White Space Enterprise**
+   - Monthly: $99.99
+   - Yearly: $999.99
+
+## 🧪 Testing
+
+### Test Cards
+- **Success**: `4242 4242 4242 4242`
+- **Decline**: `4000 0000 0000 0002`
+- **3D Secure**: `4000 0025 0000 3155`
+
+### Admin Access
+- Triple-tap the header in the main chat to access admin panel
+- View analytics, test Stripe connection, manage users
+
+## 🚀 Deployment
+
+### Production Checklist
+- [ ] Update Stripe keys to live mode
+- [ ] Configure production Supabase instance
+- [ ] Set up production webhook endpoints
+- [ ] Test complete payment flow
+- [ ] Configure monitoring and alerts
+- [ ] Set up backup and recovery
+
+### Build Commands
 ```bash
-npm run dev
+# Build for production
+npx expo build --platform ios
+npx expo build --platform android
+
+# Deploy Supabase functions
+supabase functions deploy --project-ref your-project-ref
 ```
 
-5. Run on your device
-- Scan the QR code with Expo Go app (iOS/Android)
-- Press `w` to open in web browser
+## 🤝 Contributing
 
-## Database Schema
-
-### Tables
-
-**projects**
-- Container for draft workflows
-- Fields: id, user_id, title, input_type, input_content, input_url, intent, tags, status
-
-**drafts**
-- Individual draft versions within projects
-- Fields: id, project_id, parent_draft_id, version_number, title, content, status, is_locked, metadata
-
-**draft_outputs**
-- Generated assets for each draft
-- Fields: id, draft_id, output_type, output_url, output_data, status
-
-**user_settings**
-- User preferences, integrations, and subscription tier
-- Fields: user_id, connected_integrations, preferences, memory_enabled, local_mode, subscription_tier
-
-All tables have Row Level Security (RLS) enabled for data protection.
-
-## Features
-
-### Core Draft Workflow ✅
-- ✅ **Draft Versioning**: Every generation is a versioned draft
-- ✅ **Iteration Tools**: Improve, rewrite, and expand existing drafts
-- ✅ **Side-by-Side Comparison**: Compare drafts with difference highlighting
-- ✅ **Branching System**: Fork drafts into alternative versions
-- ✅ **Timeline View**: Visual draft history with version control
-- ✅ **Undo/Redo**: Revert to any previous draft state
-- ✅ **Locking**: Mark drafts as final to prevent changes
-
-### AI Integration ✅
-- ✅ **Multi-Provider Support**: Hugging Face, OpenAI, Anthropic
-- ✅ **Task-Specific Generation**: Generate, improve, rewrite, expand
-- ✅ **Fallback System**: Automatic fallback to mock responses
-- ✅ **Configurable Providers**: Easy switching between AI services
-
-### Export & Sharing ✅
-- ✅ **Multiple Formats**: PDF, HTML, Text export
-- ✅ **Professional Layout**: Styled exports with metadata
-- ✅ **Native Sharing**: Share via system share sheet
-- ✅ **File Management**: Proper file handling and cleanup
-
-### User Experience ✅
-- ✅ **Subtle Animations**: Smooth transitions and micro-interactions
-- ✅ **Premium Feel**: Carefully crafted animations and feedback
-- ✅ **Responsive Design**: Optimized for mobile and tablet
-- ✅ **Intuitive Navigation**: Clear information hierarchy
-
-### Monetization ✅
-- ✅ **Tier System**: Free, Pro, Enterprise subscription tiers
-- ✅ **RevenueCat Integration**: Full subscription management
-- ✅ **Feature Gates**: Progressive feature unlocking
-- ✅ **Paywall Management**: Smooth upgrade flows
-
-### Input Methods ✅
-- ✅ **Universal Input**: Text, voice, camera, file upload UI
-- ✅ **Tab Navigation**: Create, Projects, Settings
-- ✅ **Processing States**: Loading animations and progress feedback
-- ✅ **Results Display**: Multi-output presentation
-
-### Data Management ✅
-- ✅ **Supabase Integration**: Real-time database with RLS
-- ✅ **Offline Support**: Local draft storage architecture
-- ✅ **User Settings**: Preferences and integration management
-- ✅ **Privacy Controls**: Local mode and data deletion options
-
-## Development
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build:web` - Build for web
-- `npm run lint` - Lint code
-- `npm run typecheck` - Type check TypeScript
-
-### Code Style
-
-This project uses:
-- TypeScript for type safety
-- Prettier for code formatting
-- ESLint for code quality
-
-## Privacy & Security
-
-- End-to-end encryption for data in transit
-- Encryption at rest for stored data
-- Optional local-only processing mode
-- User data deletion on request
-- Row Level Security on all database tables
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Submit a pull request
+4. Test thoroughly
+5. Submit a pull request
 
-## License
+## 📄 License
 
-MIT License - See LICENSE file for details
+This project is licensed under the MIT License.
 
-## Support
+## 🆘 Support
 
-For questions or issues, please open an issue on GitHub or contact the team.
+- **Documentation**: See individual component READMEs
+- **Issues**: GitHub Issues
+- **Admin Panel**: Triple-tap header for system diagnostics
 
 ---
 
-Made with care by the White Space team
+**White Space Pro** - Where AI meets enterprise. 🌟

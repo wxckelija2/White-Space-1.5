@@ -1,0 +1,43 @@
+🚀 White-Space AI Setup Instructions
+=====================================
+
+Your app is currently using mock AI responses instead of your real Edge Function.
+To fix the 401 error and enable real AI generation, follow these steps:
+
+1. CREATE YOUR .env FILE
+------------------------
+Create a file named `.env` in your project root (same folder as package.json) with this content:
+
+```
+# Supabase Configuration
+EXPO_PUBLIC_SUPABASE_URL=https://yvpafwyfcgzdtiaenylu.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2cGFmd3lmY2d6ZHRpYWVueWx1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0MTkyMTMsImV4cCI6MjA4MDk5NTIxM30.z0rVDKEP-Ae47hbT0tZ6Fi_b793y6GcyZ8bSO9M-V3I
+
+# AI Provider Configuration - This enables your Edge Function!
+EXPO_PUBLIC_AI_PROVIDER=gemini
+```
+
+2. STOP YOUR EXPO SERVER
+-----------------------
+- Press Ctrl+C in your terminal to stop the dev server
+- Close any Expo windows
+
+3. CLEAR CACHE AND RESTART
+--------------------------
+Run this command in your project folder:
+```
+npx expo start -c
+```
+
+4. VERIFY IT WORKS
+-----------------
+Your app should now:
+- Use real AI generation via your Edge Function
+- Generate actual poems and content (not mock responses)
+- Show "gemini" as the current provider in debug logs
+
+5. TEST IN YOUR APP
+------------------
+Use the AITest component I created (components/AITest.tsx) to test AI generation directly in your app.
+
+✅ RESULT: No more 401 errors, real AI content generation!

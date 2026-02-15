@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { Home, FolderOpen, Settings } from 'lucide-react-native';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/lib';
 
 export default function TabLayout() {
   const { user, loading } = useAuth();
@@ -26,44 +26,14 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#666',
         tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopWidth: 1,
-          borderTopColor: '#e5e5e5',
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '500',
+          display: 'none', // Hide bottom tabs completely
         },
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Create',
-          tabBarIcon: ({ size, color }) => <Home size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="projects"
-        options={{
-          title: 'Projects',
-          tabBarIcon: ({ size, color }) => (
-            <FolderOpen size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ size, color }) => (
-            <Settings size={size} color={color} />
-          ),
+          title: 'White Space',
         }}
       />
     </Tabs>

@@ -4,9 +4,9 @@
 
 echo "🚀 Deploying Gemini Edge Function..."
 
-# Set your Gemini API key as a secret
+# Set your Gemini API key as a secret (using the key from .env file)
 echo "Setting up environment secrets..."
-supabase secrets set GEMINI_API_KEY=your_actual_gemini_api_key_here
+supabase secrets set GEMINI_API_KEY=AIzaSyC1VCj9e4t0RLdHl_yHaIdTaCowNlcGwss
 
 # Deploy the function
 echo "Deploying function..."

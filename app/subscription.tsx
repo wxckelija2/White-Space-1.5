@@ -164,7 +164,14 @@ export default function SubscriptionScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              // If no screen to go back to, go to settings tab
+              router.replace('/(tabs)/settings' as any);
+            }
+          }}
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#000" />

@@ -1,163 +1,79 @@
-// Note: RevenueCat native module not available in Expo Go
-// This is a mock implementation for development
-import { Alert } from 'react-native';
-import { supabase } from './supabase';
-import { SubscriptionTier } from '@/types/database';
+// WhiteSpace Plus subscription system
+export type SubscriptionTier = 'basic' | 'plus';
+export type SubscriptionStatus = 'active' | 'canceled' | 'past_due' | 'incomplete';
 
-export interface SubscriptionInfo {
-  tier: SubscriptionTier;
-  isActive: boolean;
-  willRenew: boolean;
-  expirationDate?: Date;
-  managementURL?: string;
+export interface SubscriptionLimits {
+  messagesPerDay: number;
+  contextLength: number; // in tokens
+  imageGenerationsPerDay: number;
+  voiceMinutesPerMonth: number;
+  fileUploadsPerDay: number;
+  maxFileSize: number; // in MB
+  advancedCleanup: boolean;
+  contextMemory: boolean;
+  oneClickActions: boolean;
+  deepAnalysis: boolean;
 }
 
-export interface SubscriptionOffering {
+export interface Subscription {
   id: string;
-  title: string;
-  description: string;
-  price: string;
-  period: string;
+  userId: string;
+  tier: SubscriptionTier;
+  status: SubscriptionStatus;
+  stripeSubscriptionId?: string;
+  currentPeriodStart: Date;
+  currentPeriodEnd: Date;
+  cancelAtPeriodEnd: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-class SubscriptionService {
-  private initialized = false;
-
-  async initialize() {
-    if (this.initialized) return;
-
-    console.log('RevenueCat not available in Expo Go - using mock subscription service');
-    this.initialized = true;
-  }
-
-  async getSubscriptionInfo(): Promise<SubscriptionInfo> {
-    // Mock subscription info for Expo Go
-    console.log('Using mock subscription service - RevenueCat not available in Expo Go');
-    return {
-      tier: 'free',
-      isActive: true, // Allow basic functionality
-      willRenew: false,
-    };
-  }
-
-  private getDefaultSubscriptionInfo(): SubscriptionInfo {
-    return {
-      tier: 'free',
-      isActive: true, // Allow basic functionality
-      willRenew: false,
-    };
-  }
-
-  async getOfferings(): Promise<SubscriptionOffering[]> {
-    // Mock offerings for Expo Go
-    return [
-      {
-        id: 'pro_monthly',
-        title: 'Pro Monthly',
-        description: 'Unlimited drafts, comparison, and export features',
-        price: '$9.99',
-        period: 'month',
-      },
-      {
-        id: 'enterprise_yearly',
-        title: 'Enterprise Yearly',
-        description: 'Everything included with team collaboration',
-        price: '$99.99',
-        period: 'year',
-      },
-    ];
-  }
-
-  async purchasePackage(packageId: string): Promise<boolean> {
-    // Mock purchase for Expo Go
-    console.log(`Mock purchase of package: ${packageId}`);
-    Alert.alert(
-      'Mock Purchase',
-      `This would purchase ${packageId} in a real app. RevenueCat is not available in Expo Go.`,
-      [{ text: 'OK' }]
-    );
-    return false;
-  }
-
-  async restorePurchases(): Promise<boolean> {
-    // Mock restore for Expo Go
-    console.log('Mock restore purchases');
-    Alert.alert(
-      'Mock Restore',
-      'This would restore purchases in a real app. RevenueCat is not available in Expo Go.',
-      [{ text: 'OK' }]
-    );
-    return false;
-  }
-
-  // Note: Additional RevenueCat methods would be implemented here for production
-
-  // Feature access control based on subscription tier
-  canAccessFeature(feature: string, subscriptionInfo?: SubscriptionInfo): boolean {
-    if (!subscriptionInfo) return false;
-
-    const featureLimits = {
-      // Free tier limitations
-      free: {
-        maxDrafts: 3,
-        maxProjects: 5,
-        canCompare: false,
-        canBranch: false,
-        canExport: false,
-        aiProviders: ['mock'],
-      },
-      // Pro tier features
-      pro: {
-        maxDrafts: 50,
-        maxProjects: 100,
-        canCompare: true,
-        canBranch: true,
-        canExport: true,
-        aiProviders: ['mock', 'huggingface', 'openai'],
-      },
-      // Enterprise tier features
-      enterprise: {
-        maxDrafts: -1, // unlimited
-        maxProjects: -1, // unlimited
-        canCompare: true,
-        canBranch: true,
-        canExport: true,
-        aiProviders: ['mock', 'huggingface', 'openai', 'anthropic'],
-      },
-    };
-
-    const limits = featureLimits[subscriptionInfo.tier];
-
-    switch (feature) {
-      case 'compare':
-        return limits.canCompare;
-      case 'branch':
-        return limits.canBranch;
-      case 'export':
-        return limits.canExport;
-      case 'advanced_ai':
-        return subscriptionInfo.tier !== 'free';
-      default:
-        return true;
-    }
-  }
-
-  // Check if user has reached limits
-  hasReachedLimit(feature: string, currentCount: number, subscriptionInfo?: SubscriptionInfo): boolean {
-    if (!subscriptionInfo) return true;
-
-    const featureLimits = {
-      free: { maxDrafts: 3, maxProjects: 5 },
-      pro: { maxDrafts: 50, maxProjects: 100 },
-      enterprise: { maxDrafts: -1, maxProjects: -1 },
-    };
-
-    const limits = featureLimits[subscriptionInfo.tier];
-    const limit = limits[feature as keyof typeof limits] as number;
-
-    return limit !== -1 && currentCount >= limit;
-  }
+export interface UsageStats {
+  messagesToday: number;
+  totalMessages: number;
+  imageGenerationsToday: number;
+  totalImageGenerations: number;
+  voiceMinutesThisMonth: number;
+  totalVoiceMinutes: number;
+  fileUploadsToday: number;
+  totalFileUploads: number;
+  lastResetDate: Date;
 }
 
-// Export singleton instance
-export const subscriptionService = new SubscriptionService();
+// Subscription limits by tier
+// Free tier: unlimited text chat, limited image generation
+// Plus tier: unlimited everything
+export const SUBSCRIPTION_LIMITS: Record<SubscriptionTier, SubscriptionLimits> = {
+  basic: {
+    messagesPerDay: -1, // unlimited text chat for free users
+    contextLength: 4000,
+    imageGenerationsPerDay: 3, // Free users get 3 image generations per day
+    voiceMinutesPerMonth: 5, // 5 minutes of voice per month
+    fileUploadsPerDay: 5,
+    maxFileSize: 10,
+    advancedCleanup: false,
+    contextMemory: false,
+    oneClickActions: false,
+    deepAnalysis: false,
+  },
+  plus: {
+    messagesPerDay: -1, // unlimited
+    contextLength: 16000,
+    imageGenerationsPerDay: -1, // unlimited
+    voiceMinutesPerMonth: -1, // unlimited
+    fileUploadsPerDay: -1, // unlimited
+    maxFileSize: 100,
+    advancedCleanup: true,
+    contextMemory: true,
+    oneClickActions: true,
+    deepAnalysis: true,
+  },
+};
+
+// Pricing (in cents)
+export const SUBSCRIPTION_PRICES = {
+  plus: {
+    monthly: 2000, // $20.00
+    yearly: 19900, // $199.00 (save ~17%)
+  },
+};

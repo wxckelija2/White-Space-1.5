@@ -372,7 +372,14 @@ export default function DraftWorkspaceScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              // If no screen to go back to, go to projects tab
+              router.replace('/(tabs)/projects' as any);
+            }
+          }}
           style={styles.backButton}
         >
           <ArrowLeft size={24} color="#000" />

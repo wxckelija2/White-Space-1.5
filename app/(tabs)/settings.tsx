@@ -20,7 +20,7 @@ import {
   LogOut,
   Crown,
 } from 'lucide-react-native';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/lib';
 
 export default function SettingsScreen() {
   const router = useRouter();
